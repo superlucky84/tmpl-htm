@@ -1,5 +1,5 @@
 import { h, Fragment } from '@/wDom';
-import { ref } from '@/hook/ref';
+import { ref } from '@/utils';
 
 export type {
   WDom,
@@ -9,11 +9,9 @@ export type {
   ComponentSubKey,
   ComponentRef,
   Props,
-  Renew,
   MiddleStateWDomChildren,
   MiddleStateWDom,
   NodePointer,
-  Param,
 } from '@/types';
 
 declare global {

@@ -9,230 +9,7 @@ import {
   checkVirtualType,
 } from '@/utils/predicator';
 
-import { xmlnsRef } from '@/utils/universalRef';
-import { execMountedQueue, addMountedQueue } from '@/hook/mountCallback';
-import { runUpdatedQueueFromWDom } from '@/hook/useUpdate';
-import { getParent, getEventName, getAttrKey, entries, keys } from '@/utils';
-
-export const render = (wDom: WDom) => {
-  return wDomToDom(wDom);
-};
-
-export const wDomUpdate = (newWDomTree: WDom) => {
-  const { needRerender } = newWDomTree;
-
-  if (needRerender && needRerender !== 'N') {
-    ({
-      A: typeAdd,
-      D: typeDelete,
-      R: typeReplace,
-      U: typeUpdate,
-      SR: typeSortedReplace,
-      SU: typeSortedUpdate,
-    })[needRerender](newWDomTree);
-  }
-};
-
-export const recursiveRemoveEvent = (originalWDom: WDom) => {
-  if (originalWDom.props && originalWDom.el) {
-    removeEvent(originalWDom.props, originalWDom.el);
-  }
-
-  (originalWDom.children || []).forEach((childItem: WDom) => {
-    recursiveRemoveEvent(childItem);
-  });
-};
-
-const rootDelete = (newWDom: WDom) => {
-  deleteRealDom(newWDom, newWDom.wrapElement as HTMLElement);
-};
-
-const typeDelete = (newWDom: WDom) => {
-  if (newWDom.oldProps && newWDom.el) {
-    removeEvent(newWDom.oldProps, newWDom.el);
-  }
-
-  deleteRealDom(
-    newWDom,
-    findRealParentElement(getParent(newWDom)) as HTMLElement
-  );
-};
-
-const deleteRealDom = (newWDom: WDom, parent: HTMLElement) => {
-  if (parent && newWDom.el) {
-    if (newWDom.el?.nodeType === 1) {
-      parent.removeChild(newWDom.el);
-    } else if (newWDom.el?.nodeType === 11) {
-      findChildWithRemoveElement(newWDom, parent as HTMLElement);
-    }
-    delete newWDom.el;
-  }
-};
-
-const findChildWithRemoveElement = (newWDom: WDom, parent: HTMLElement) => {
-  (newWDom?.oldChildren || newWDom?.children || []).forEach(item => {
-    if (item.el?.nodeType === 1) {
-      parent.removeChild(item?.el);
-    } else if (item.el?.nodeType === 11) {
-      findChildWithRemoveElement(item, parent);
-    }
-  });
-};
-
-const typeSortedReplace = (newWDom: WDom) => {
-  typeDelete(newWDom);
-  typeAdd(newWDom);
-};
-
-const typeSortedUpdate = (newWDom: WDom) => {
-  typeDelete(newWDom);
-  typeAdd(newWDom, newWDom.el);
-};
-
-const typeAdd = (
-  newWDom: WDom,
-  newElement?: HTMLElement | DocumentFragment | Text
-) => {
-  if (!newElement) {
-    newElement = wDomToDom(newWDom) as HTMLElement;
-  }
-
-  const parentWDom = getParent(newWDom);
-  if (parentWDom.type) {
-    const parentEl = findRealParentElement(parentWDom);
-    const isLoop = parentWDom.type === 'loop';
-    const nextEl = isLoop
-      ? startFindNextBrotherElement(parentWDom, getParent(parentWDom))
-      : startFindNextBrotherElement(newWDom, parentWDom);
-
-    if (newElement && parentEl) {
-      if (nextEl) {
-        parentEl.insertBefore(newElement, nextEl);
-      } else {
-        parentEl.appendChild(newElement);
-      }
-
-      execMountedQueue();
-    }
-  }
-};
-
-const startFindNextBrotherElement = (
-  wDom: WDom,
-  parentWDom: WDom
-): HTMLElement | DocumentFragment | Text | undefined => {
-  const brothers = parentWDom.children || [];
-  const index = brothers.indexOf(wDom);
-  const nextIndex = index + 1;
-  const candidiateBrothers = brothers.slice(nextIndex);
-
-  const finedNextEl = findChildFragmentNextElement(candidiateBrothers);
-  const parentType = parentWDom.type || '';
-
-  if (finedNextEl) {
-    return finedNextEl;
-  }
-
-  if (!parentWDom.isRoot && checkVirtualType(parentType)) {
-    return startFindNextBrotherElement(parentWDom, getParent(parentWDom));
-  } else if (parentWDom.isRoot && parentWDom.afterElement) {
-    return parentWDom.afterElement;
-  }
-
-  return undefined;
-};
-
-const findChildFragmentNextElement = (
-  candidiateBrothers: WDom[]
-): HTMLElement | DocumentFragment | Text | undefined =>
-  candidiateBrothers.reduce(
-    (
-      targetEl: HTMLElement | DocumentFragment | Text | undefined,
-      bItem: WDom
-    ) => {
-      const type = bItem.type;
-      const el = bItem.el;
-      const isFragment = type && checkVirtualType(type);
-
-      if (targetEl) {
-        return targetEl;
-      } else if (isFragment) {
-        return findChildFragmentNextElement(bItem.children || []);
-      } else if (el && el.nodeType !== 11) {
-        return el;
-      }
-
-      return targetEl;
-    },
-    undefined
-  );
-
-const typeReplace = (newWDom: WDom) => {
-  const parentWDom = getParent(newWDom);
-  const orignalElement = newWDom.el;
-
-  if (parentWDom.type && orignalElement) {
-    if (orignalElement.nodeType === 11) {
-      typeSortedReplace(newWDom);
-    } else {
-      const parentElement = findRealParentElement(parentWDom);
-      const newElement = wDomToDom(newWDom);
-
-      if (parentElement) {
-        parentElement.replaceChild(newElement, orignalElement);
-      }
-      execMountedQueue();
-    }
-  }
-};
-
-const removeEvent = (
-  oldProps: Props,
-  element: HTMLElement | DocumentFragment | Text
-) => {
-  entries(oldProps || {}).forEach(([dataKey, dataValue]: [string, unknown]) => {
-    if (dataKey.match(/^on/)) {
-      element.removeEventListener(
-        getEventName(dataKey),
-        dataValue as (e: Event) => void
-      );
-    }
-  });
-};
-
-const typeUpdate = (newWDom: WDom) => {
-  const element = newWDom.el;
-
-  if (newWDom.type === 'text') {
-    updateText(newWDom);
-
-    return;
-  }
-
-  if (element) {
-    const { oldProps, props } = newWDom;
-
-    updateProps(props, element, oldProps);
-
-    delete newWDom.oldProps;
-
-    if (newWDom.tag === 'input') {
-      (element as HTMLInputElement).value = String(newWDom?.props?.value || '');
-    }
-  }
-
-  (newWDom.children || []).forEach((childItem: WDom) => wDomUpdate(childItem));
-
-  runUpdatedQueueFromWDom(newWDom);
-};
-
-const updateText = (newWDom: WDom) => {
-  const element = newWDom.el;
-
-  if (element) {
-    element.nodeValue = String(newWDom.text);
-  }
-};
+import { xmlnsRef, getAttrKey, entries, keys } from '@/utils';
 
 const updateProps = (
   props?: Props,
@@ -243,9 +20,8 @@ const updateProps = (
 
   entries(props || {}).forEach(([dataKey, dataValue]: [string, unknown]) => {
     let chkRemoveProp = true;
-    if (dataKey === 'key') {
-      // Do nothing
-    } else if (dataKey === 'innerHTML' && typeof dataValue === 'string') {
+
+    if (dataKey === 'innerHTML' && typeof dataValue === 'string') {
       (element as HTMLElement).innerHTML = dataValue;
     } else if (checkStyleData(dataKey, dataValue)) {
       updateStyle(
@@ -255,13 +31,6 @@ const updateProps = (
       );
     } else if (checkRefData(dataKey, dataValue)) {
       dataValue.value = element;
-    } else if (dataKey.match(/^on/)) {
-      updateEvent(
-        element as HTMLElement,
-        dataKey,
-        dataValue as (e: Event) => void,
-        originalProps[dataKey] as (e: Event) => void
-      );
     } else if (checkCheckableElement(element) && dataKey === 'checked') {
       (element as HTMLInputElement).checked = !!dataValue;
     } else if (checkTextareaElement(element) && dataKey === 'value') {
@@ -336,8 +105,6 @@ export const wDomToDom = (wDom: WDom) => {
 
   wDom.el = element as HTMLElement;
 
-  addMountedQueue(wDom);
-
   if (tag === 'svg') {
     xmlnsRef.value = '';
   }
@@ -365,25 +132,6 @@ const wDomChildrenToDom = (
   }
 };
 
-const updateEvent = (
-  element: HTMLElement,
-  eventKey: string,
-  newEventHandler: (e: Event) => void,
-  oldEventHandler: (e: Event) => void
-) => {
-  const eventName = getEventName(eventKey);
-
-  if (oldEventHandler !== newEventHandler) {
-    if (oldEventHandler) {
-      element.removeEventListener(eventName, oldEventHandler);
-    }
-
-    if (newEventHandler) {
-      element.addEventListener(eventName, newEventHandler);
-    }
-  }
-};
-
 const updateStyle = (
   style: Record<string, string>,
   oldStyle: Record<string, string>,
@@ -402,19 +150,4 @@ const updateStyle = (
       ([styleKey]) => ((elementStyle as any)[styleKey] = '')
     );
   }
-};
-
-const findRealParentElement = (
-  vDom: WDom
-): HTMLElement | DocumentFragment | Text | undefined => {
-  const isVirtualType = checkVirtualType(vDom.type);
-  if (vDom.isRoot && isVirtualType) {
-    return vDom.wrapElement;
-  }
-
-  if (!isVirtualType) {
-    return vDom.el as HTMLElement;
-  }
-
-  return findRealParentElement(getParent(vDom));
 };

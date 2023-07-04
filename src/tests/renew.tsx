@@ -15,8 +15,5 @@ const Renew = (props: { a: string }) => {
   );
 };
 
-const jj = <Renew a="3" />;
-
-console.log(jj);
-
-// document.body.appendChild(<Renew a="3" />);
+document.body.appendChild(<Renew a="3" />);
+document.body.appendChild(<Renew a="9" />);

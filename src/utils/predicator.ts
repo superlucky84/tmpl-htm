@@ -24,45 +24,6 @@ const checkPlainWDomType = (wDom: WDomParam): wDom is WDom =>
 const checkPlainType = (wDom: WDomParam, typeName: string) =>
   checkPlainWDomType(wDom) && wDom.type === typeName;
 
-const checkSameCustomComponent = (
-  newWDom: WDom | TagFunction | TagFunctionResolver,
-  originalWDom?: WDom
-) =>
-  'ctor' in newWDom
-    ? newWDom.ctor === originalWDom?.ctor
-    : newWDom === originalWDom?.ctor;
-
-const checkSameFragment = (
-  newWDom: WDom | TagFunction | TagFunctionResolver,
-  originalWDom?: WDom
-) =>
-  checkPlainWDomType(newWDom) &&
-  originalWDom?.type === 'fragment' &&
-  originalWDom?.children?.length === newWDom?.children?.length;
-
-const checkSameTagElement = (
-  newWDom: WDom | TagFunction | TagFunctionResolver,
-  originalWDom?: WDom
-) =>
-  checkPlainWDomType(newWDom) &&
-  originalWDom?.type === 'element' &&
-  originalWDom?.tag === newWDom.tag &&
-  originalWDom?.children?.length === newWDom?.children?.length;
-
-const checkNormalTypeElement = (
-  newWDom: WDom | TagFunction | TagFunctionResolver,
-  originalWDom?: WDom
-) =>
-  checkPlainWDomType(newWDom) &&
-  originalWDom?.type === newWDom.type &&
-  (originalWDom?.children?.length === newWDom?.children?.length ||
-    (newWDom.type === 'loop' &&
-      checkExisty(getKey((newWDom.children || [])[0])) &&
-      checkExisty(getKey((originalWDom.children || [])[0]))));
-
-export const getKey = (target: WDom) =>
-  target?.compProps?.key ?? target?.props?.key;
-
 export const checkVirtualType = (type: string | null) =>
   type && ['fragment', 'loop'].includes(type);
 
@@ -124,13 +85,4 @@ export const getWDomType = (
   }
 
   return result;
-};
-
-export const checkSameWDomWithOriginal = {
-  c: checkSameCustomComponent,
-  l: checkNormalTypeElement,
-  t: checkNormalTypeElement,
-  e: checkSameTagElement,
-  f: checkSameFragment,
-  et: checkNormalTypeElement,
 };
