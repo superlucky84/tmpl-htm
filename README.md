@@ -46,6 +46,10 @@ const element = tmplTag`<${Component} />`;
 
 #### With JSX
 
+* If you don't want to use 'tmplTag', you can use 'JSX' as an alternative.
+
+`import { h } from 'tmpl-htm';`
+
 ```js
 // Setting JSX - Babel
 ...
@@ -119,36 +123,22 @@ const element = tmplTag`<${Component} />`;
 
 ## Examples
 
-- [More Examples](https://superlucky84.github.io/lithent/#examples)
-
 #### With ESM
 ```js
-import { h, render, mount, Fragment } from 'tmpl-htm';
-import { state } from 'lithent/helper';
-import htm from 'htm';
-const html = htm.bind(h);
+import { Fragment, tmplTag, appendAll } from 'tmpl-htm';
 
-const Component = mount((renew, _props) => {
-  const count = state(0, renew);
-
-  const change = () => {
-    count.value += 1;
-  };
-
-  // Updater
-  return () => html`
+const Component = (renew, props) => {
+  return () => tmplTag`
     <${Fragment}>
-      <li>count: ${count.value}</li>
+      <li>count: ${props.count}</li>
       <button onClick=${change}>increase</button>
     <//>
   `;
 });
 
-// insertBefore
-// render(`<${Component} />`, document.getElementById('root'), document.getElementById('nextElement'));
-
-// appendChild
-const destroy = render(html`<${Component} />`, document.getElementById('root'));
+document.body.appendChild(tmplTag`<${Component}>`);
+appendAll(tmplTag`<${Component}>`, document.querySelectorAll('.target'));
+// append, appendAll, prepend, prependAll, replace, replaceAll, insertBefore, insertBeforeAll,
 ```
 
 #### With UMD
@@ -159,28 +149,20 @@ const destroy = render(html`<${Component} />`, document.getElementById('root'));
 <div id="root"></div>
 
 <script>
-const { h, Fragment, tmplTag } = tmplHtm;
-// const { state } = lithentHelper;
-const html = htm.bind(h);
+const { Fragment, tmplTag, appendAll } = 'tmplHtm';
 
-const Component = mount(renew => {
-  count = 0;
-
-  const change = () => {
-    count += 1;
-    renew();
-  };
-
-  // Updater
-  return () => html`
+const Component = (renew, props) => {
+  return () => tmplTag`
     <${Fragment}>
-      <li>count: ${count}</li>
+      <li>count: ${props.count}</li>
       <button onClick=${change}>increase</button>
     <//>
   `;
 });
 
-const destroy = render(html`<${Component} />`, document.getElementById('root'));
+document.body.appendChild(tmplTag`<${Component}>`);
+appendAll(tmplTag`<${Component}>`, document.querySelectorAll('.target'));
+// append, appendAll, prepend, prependAll, replace, replaceAll, insertBefore, insertBeforeAll,
 </script>
 ```
 
