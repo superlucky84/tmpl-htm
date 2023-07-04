@@ -1,15 +1,8 @@
 # lithent
 
-> An extensible virtual DOM library for lightweight use in a variety of environments.
+Generate HTML elements using HTM ("Hyperscript Tagged Markup") or JSX.
 
-Lithent were developed to make it easy to insert Virtual DOM component
-fragments into pages already drawn with SSR, and are intended to be
-used lightly in a variety of situations.
-
-- https://superlucky84.github.io/lithent
-  - (This guide page is written in lithent.)
-
-`(9.64 KiB / gzip: 3.76 KiB)`
+`(4.20 KiB / gzip: 1.90 KiB)`
 
 ## 🚩 Table of Contents
 
@@ -146,7 +139,7 @@ appendAll(tmplTag`<${Component}>`, document.querySelectorAll('.target'));
 ```html
 <script src="https://cdn.jsdelivr.net/npm/tmpl-htm@1.0.0/dist/tmplHtm.umd.js"></script>
 
-<div id="root"></div>
+<div class="target"></div>
 
 <script>
 const { Fragment, tmplTag, appendAll } = 'tmplHtm';
@@ -179,7 +172,7 @@ npm install -g pnpm
 ### project install
 
 ```bash
-git clone https://github.com/superlucky84/lithent.git
+git clone https://github.com/superlucky84/tmpl-htm.git
 
 cd lithent
 
@@ -195,7 +188,7 @@ pnpm build
 ### Running the development environment
 
 ```bash
-pnpm dev // or pnpm dev:core
+pnpm dev
 ```
 
 ## Test
