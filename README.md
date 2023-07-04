@@ -143,7 +143,7 @@ appendAll(tmplTag`<${Component}>`, document.querySelectorAll('.target'));
 <div class="target"></div>
 
 <script>
-const { Fragment, tmplTag, appendAll } = 'tmplHtm';
+const { Fragment, tmplTag, appendAll } = tmplHtm;
 
 const Component = (props) => {
   return tmplTag`
