@@ -13,8 +13,6 @@ used lightly in a variety of situations.
 
 ## 🚩 Table of Contents
 
-- [Why Use Lithent](#why-use-lithent)
-- [Basic Guide](#basic-guide)
 - [How To Install](#how-to-install)
   - [Use NPM](#use-npm)
   - [Use CDN](#or-use-cdn)
@@ -25,30 +23,6 @@ used lightly in a variety of situations.
   - [With UMD](#with-umd)
 - [Develop Guide](#develop-guide)
 - [Test](#test)
-
-## Why use Lithent?
-
-### Lithent have the bare minimum of necessary functionality, with no unnecessary features.
-
-In a real-world development environment, you may want to use Virtual DOM lightly, with only the bare minimum of core functionality.
-
-"Lithent" makes it easy to add, remove, and update virtual domes to specific parts of a pre-drawn SSR page.
-
-"Lithent" has implemented the bare minimum functionality needed to create and update virtual DOM in general (we only need to know 'render', 'mounter', 'updater', 'renewer', 'mountCallback', and 'updateCallback').
-
-We provide code in the form of 'helpers' that extend the basic functionality, but using the helpers is only optional and users can extend and develop custom helpers for their own projects.
-
-### Approach with the developer-friendly concept of closures between "component mounter" and "renderer"
-
-Many existing UI libraries have their advantages, but they also create rules that are too strong and rigid for fear of users making mistakes.
-
-JavaScript users are used to using closures and love to develop with them.
-
-"Lithent" provides a familiar approach to my JavaScript development, as it leverages the properties of higher-order functions and closures to define and recycle the state of a component.
-
-## Basic Guide
-
-- https://superlucky84.github.io/lithent/
 
 ## How To Install
 
@@ -65,19 +39,83 @@ pnpm add tmpl-htm
 
 #### With HTM
 
-#### With JSX
-
-
-
 ```js
-import { h, render, mount } from 'lithent';
-import htm from 'htm';
-const html = htm.bind(h);
+import { tmplTag } from 'tmpl-htm';
+const element = tmplTag`<${Component} />`;
 ```
 
 #### With JSX
 
-- [Setting Guide](https://superlucky84.github.io/lithent/#install)
+```js
+// Setting JSX - Babel
+...
+{
+  "plugins": [
+    ["@babel/plugin-transform-react-jsx", {
+      "pragma": "h",
+      "pragmaFrag": "Fragment",
+    }]
+  ]
+}
+...
+```
+
+```js
+// Setting JSX - Typescript < 4.1.1
+
+...
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+    //...
+  }
+}
+...
+
+```
+
+```js
+// Setting JSX - Typescript >= 4.1.1
+
+...
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "lithent",
+    //...
+  }
+}
+...
+```
+
+```js
+// Setting JSX - If you use TypeScript within a Babel toolchain
+
+...
+// typescript config
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+    //...
+  }
+}
+
+// babel config
+{
+  presets: [
+    "@babel/env",
+    ["@babel/typescript", { jsxPragma: "h" }],
+  ],
+  plugins: [
+    ["@babel/transform-react-jsx", { pragma: "h" }]
+  ],
+}
+...
+```
 
 ## Examples
 
