@@ -14,6 +14,7 @@ Generate HTML elements using HTM ("Hyperscript Tagged Markup") or JSX.
 - [Examples](#examples)
   - [With ESM](#with-esm)
   - [With UMD](#with-umd)
+- [Related Projects](#related-projects)
 - [Develop Guide](#develop-guide)
 - [Test](#test)
 
@@ -158,6 +159,9 @@ appendAll(tmplTag`<${Component}>`, document.querySelectorAll('.target'));
 // append, appendAll, prepend, prependAll, replace, replaceAll, insertBefore, insertBeforeAll,
 </script>
 ```
+
+## Related Projects
+- [htm](https://www.npmjs.com/package/htm) - making **H**yperscript **T**agged **M**arkup possible
 
 ## Develop Guide
 
