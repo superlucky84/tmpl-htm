@@ -55,26 +55,19 @@ JavaScript users are used to using closures and love to develop with them.
 #### Use NPM
 
 ```bash
-pnpm add lithent
+pnpm add tmpl-htm
 ```
 
 #### Or Use CDN
 
-* UMD : https://cdn.jsdelivr.net/npm/lithent@1.0.4/dist/lithent.umd.js
-* UMD-HELPER: https://cdn.jsdelivr.net/npm/lithent@1.0.4/helper/dist/lithentHelper.umd.js
-* ESM : https://cdn.jsdelivr.net/npm/lithent@1.0.4/dist/lithent.mjs
-* ESM-HELPER: https://cdn.jsdelivr.net/npm/lithent@1.0.4/helper/dist/lithentHelper.mjs
+* UMD : https://cdn.jsdelivr.net/npm/tmpl-htm@1.0.0/dist/tmplHtm.umd.js
 
-
-It's easier to use lithent with JSX or HTM.
 
 #### With HTM
 
-- [Htm Github](https://github.com/developit/htm)
+#### With JSX
 
-```bash
-pnpm add -D htm
-```
+
 
 ```js
 import { h, render, mount } from 'lithent';
@@ -92,7 +85,7 @@ const html = htm.bind(h);
 
 #### With ESM
 ```js
-import { h, render, mount, Fragment } from 'lithent';
+import { h, render, mount, Fragment } from 'tmpl-htm';
 import { state } from 'lithent/helper';
 import htm from 'htm';
 const html = htm.bind(h);
@@ -123,14 +116,12 @@ const destroy = render(html`<${Component} />`, document.getElementById('root'));
 #### With UMD
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/lithent@1.0.4/dist/lithent.umd.js"></script>
-<!--script src="https://cdn.jsdelivr.net/npm/lithent@1.0.4/helper/dist/lithentHelper.umd.js"></script-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/htm/3.1.1/htm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tmpl-htm@1.0.0/dist/tmplHtm.umd.js"></script>
 
 <div id="root"></div>
 
 <script>
-const { h, Fragment, render, mount } = lithent;
+const { h, Fragment, tmplTag } = tmplHtm;
 // const { state } = lithentHelper;
 const html = htm.bind(h);
 
