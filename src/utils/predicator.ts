@@ -4,7 +4,6 @@ import {
   TagFunction,
   TagFunctionResolver,
   FragmentFunction,
-  WDomType,
 } from '@/types';
 
 type WDomParam =
@@ -18,12 +17,6 @@ type WDomParam =
  * Predicator
  */
 
-const checkPlainWDomType = (wDom: WDomParam): wDom is WDom =>
-  typeof wDom === 'object' && !('resolve' in wDom);
-
-const checkPlainType = (wDom: WDomParam, typeName: string) =>
-  checkPlainWDomType(wDom) && wDom.type === typeName;
-
 export const checkVirtualType = (type: string | null) =>
   type && ['fragment', 'loop'].includes(type);
 
@@ -36,9 +29,6 @@ export const checkFragmentFunction = (
   target: unknown
 ): target is FragmentFunction =>
   typeof target === 'function' && target === Fragment;
-
-export const checkEmptyElement = (wDom: WDomParam) =>
-  checkPlainWDomType(wDom) && !wDom.type;
 
 export const checkExisty = (value: unknown) =>
   value !== null && value !== undefined;
@@ -64,25 +54,3 @@ export const checkTextareaElement = (element: any): element is HTMLElement =>
 
 export const checkCheckableElement = (element: any): element is HTMLElement =>
   element.nodeType === 1 && ['radio', 'checkbox'].includes(element.type);
-
-export const getWDomType = (
-  wDom: WDom | TagFunction | TagFunctionResolver
-): WDomType => {
-  let result: WDomType = 'et';
-
-  if (checkCustemComponentFunction(wDom)) {
-    result = 'c';
-  } else if (checkPlainType(wDom, 'fragment')) {
-    result = 'f';
-  } else if (checkPlainType(wDom, 'element')) {
-    result = 'e';
-  } else if (checkPlainType(wDom, 'loop')) {
-    result = 'l';
-  } else if (checkPlainType(wDom, 'text')) {
-    result = 't';
-  } else if (checkEmptyElement(wDom)) {
-    result = 'et';
-  }
-
-  return result;
-};

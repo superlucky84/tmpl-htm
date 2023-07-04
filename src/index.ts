@@ -1,18 +1,7 @@
 import { h, Fragment } from '@/wDom';
 import { ref } from '@/utils';
 
-export type {
-  WDom,
-  TagFunction,
-  TagFunctionResolver,
-  FragmentFunction,
-  ComponentSubKey,
-  ComponentRef,
-  Props,
-  MiddleStateWDomChildren,
-  MiddleStateWDom,
-  NodePointer,
-} from '@/types';
+export type { WDom, TagFunction, FragmentFunction, Props } from '@/types';
 
 declare global {
   namespace JSX {
