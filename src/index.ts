@@ -8,14 +8,15 @@ export {
   prependAll,
   replace,
   replaceAll,
+  insertBefore,
   insertBeforeAll,
 } from '@/utils/helper';
 
 const tmplTag = htm.bind(h);
 
-export type { WDom, TagFunction, FragmentFunction, Props } from '@/types';
+export type { TmplDom, Props } from '@/types';
 
-export { h, Fragment, tmplTag };
+export { h, Fragment, tmplTag, htm };
 
 declare global {
   namespace JSX {

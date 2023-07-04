@@ -1,14 +1,14 @@
 import { Fragment } from '@/wDom';
 import {
-  WDom,
+  TmplDom,
   TagFunction,
   TagFunctionResolver,
   FragmentFunction,
 } from '@/types';
 
-type WDomParam =
+type TmplDomParam =
   | string
-  | WDom
+  | TmplDom
   | TagFunction
   | TagFunctionResolver
   | FragmentFunction;
@@ -21,7 +21,7 @@ export const checkVirtualType = (type: string | null) =>
   type && ['fragment', 'loop'].includes(type);
 
 export const checkCustemComponentFunction = (
-  target: WDomParam
+  target: TmplDomParam
 ): target is TagFunction | TagFunctionResolver =>
   typeof target === 'function' && !checkFragmentFunction(target);
 

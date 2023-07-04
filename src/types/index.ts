@@ -4,45 +4,45 @@ export type Props = { [key: string]: unknown };
 
 export type TagFunction = (
   prop: Props,
-  children: WDom[]
-) => (prop: Props, children: WDom[]) => (props: Props) => WDom;
+  children: TmplDom[]
+) => (prop: Props, children: TmplDom[]) => (props: Props) => TmplDom;
 
-export type Component<T> = (props: T, childen: WDom[]) => (props: T) => WDom;
+export type Component<T> = (props: T, childen: TmplDom[]) => (props: T) => TmplDom;
 
 export type TagFunctionResolver = {
   tagName: string;
   ctor: Function;
   props: Props;
-  children: WDom[];
-  resolve: (compKey?: Props) => WDom;
+  children: TmplDom[];
+  resolve: (compKey?: Props) => TmplDom;
 };
 
-export type FragmentFunction = (props: Props, children: WDom[]) => WDom;
+export type FragmentFunction = (props: Props, children: TmplDom[]) => TmplDom;
 
-export type NodePointer = { value: WDom | undefined };
+export type NodePointer = { value: TmplDom | undefined };
 
-export type MiddleStateWDom =
-  | WDom
+export type MiddleStateTmplDom =
+  | TmplDom
   | number
   | string
   | false
   | null
-  | MiddleStateWDomChildren;
+  | MiddleStateTmplDomChildren;
 
-export type MiddleStateWDomChildren = MiddleStateWDom[];
+export type MiddleStateTmplDomChildren = MiddleStateTmplDom[];
 
-export interface WDom {
+export interface TmplDom {
   type: string | null;
   tag?: string;
   props?: Props;
   tagName?: string;
   ctor?: Function;
-  children?: WDom[];
-  oldChildren?: WDom[];
+  children?: TmplDom[];
+  oldChildren?: TmplDom[];
   text?: string | number;
   compKey?: Props;
   compProps?: Props;
-  compChild?: WDom[];
+  compChild?: TmplDom[];
   wrapElement?: HTMLElement;
   afterElement?: HTMLElement;
   el?: HTMLElement | DocumentFragment | Text;

@@ -21,8 +21,8 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: resolve(__dirname, 'src'),
-      name: 'lithent',
-      fileName: 'lithent',
+      name: 'tmplHtm',
+      fileName: 'tmplHtm',
     },
   },
   test: {

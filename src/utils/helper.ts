@@ -1,6 +1,6 @@
 export const appendAll = (
   el: HTMLElement,
-  wrap: HTMLElement | HTMLElement[]
+  wrap: HTMLElement | HTMLElement[] | NodeListOf<Element>
 ) => {
   // @ts-ignore
   if (!wrap[Symbol.iterator]) {
@@ -20,7 +20,7 @@ export const append = (el: HTMLElement, wrap: HTMLElement) => {
 
 export const prependAll = (
   el: HTMLElement,
-  wrap: HTMLElement | HTMLElement[]
+  wrap: HTMLElement | HTMLElement[] | NodeListOf<Element>
 ) => {
   // @ts-ignore
   if (!wrap[Symbol.iterator]) {
@@ -40,12 +40,12 @@ export const prepend = (el: HTMLElement, wrap: HTMLElement) => {
 
 export const replaceAll = (
   el: HTMLElement,
-  targetEl: HTMLElement | HTMLElement[]
+  targetEl: HTMLElement | HTMLElement[] | NodeListOf<Element>
 ) => {
   // @ts-ignore
-  if (!wrap[Symbol.iterator]) {
+  if (!targetEl[Symbol.iterator]) {
     // @ts-ignore
-    wrap = [wrap];
+    targetEl = [targetEl];
   }
   // @ts-ignore
   Array.from(targetEl).forEach(item => {
@@ -60,12 +60,12 @@ export const replace = (el: HTMLElement, targetEl: HTMLElement) => {
 
 export const insertBeforeAll = (
   el: HTMLElement,
-  targetEl: HTMLElement | HTMLElement[]
+  targetEl: HTMLElement | HTMLElement[] | NodeListOf<Element>
 ) => {
   // @ts-ignore
-  if (!wrap[Symbol.iterator]) {
+  if (!targetEl[Symbol.iterator]) {
     // @ts-ignore
-    wrap = [wrap];
+    targetEl = [targetEl];
   }
   // @ts-ignore
   Array.from(targetEl).forEach(item => {

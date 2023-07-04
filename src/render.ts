@@ -1,4 +1,4 @@
-import { WDom, Props } from '@/types';
+import { TmplDom, Props } from '@/types';
 import {
   checkStyleData,
   checkRefData,
@@ -79,7 +79,7 @@ const makeAttrDataValue = (dataValue: unknown): [boolean, string] => {
   return [allowSetAttr, String(dataValue)];
 };
 
-export const wDomToDom = (wDom: WDom) => {
+export const wDomToDom = (wDom: TmplDom) => {
   let element;
   const { type, tag, text, props, children = [] } = wDom;
   const isVirtualType = checkVirtualType(type);
@@ -113,11 +113,11 @@ export const wDomToDom = (wDom: WDom) => {
 };
 
 const wDomChildrenToDom = (
-  children: WDom[],
+  children: TmplDom[],
   parentElement?: HTMLElement | Element | DocumentFragment | Text
 ) => {
   const elementChildren = children.reduce(
-    (acc: DocumentFragment, childItem: WDom) => {
+    (acc: DocumentFragment, childItem: TmplDom) => {
       if (childItem.type) {
         acc.appendChild(wDomToDom(childItem));
       }
