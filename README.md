@@ -121,8 +121,8 @@ const element = tmplTag`<${Component} />`;
 ```js
 import { Fragment, tmplTag, appendAll } from 'tmpl-htm';
 
-const Component = (renew, props) => {
-  return () => tmplTag`
+const Component = (props) => {
+  return tmplTag`
     <${Fragment}>
       <li>count: ${props.count}</li>
       <button onClick=${change}>increase</button>
@@ -145,8 +145,8 @@ appendAll(tmplTag`<${Component}>`, document.querySelectorAll('.target'));
 <script>
 const { Fragment, tmplTag, appendAll } = 'tmplHtm';
 
-const Component = (renew, props) => {
-  return () => tmplTag`
+const Component = (props) => {
+  return tmplTag`
     <${Fragment}>
       <li>count: ${props.count}</li>
       <button onClick=${change}>increase</button>
