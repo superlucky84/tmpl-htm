@@ -1,4 +1,4 @@
-# lithent
+# tmpl-htm
 
 Generate HTML elements using HTM ("Hyperscript Tagged Markup") or JSX.
 
@@ -28,7 +28,7 @@ pnpm add tmpl-htm
 
 #### Or Use CDN
 
-* UMD : https://cdn.jsdelivr.net/npm/tmpl-htm@1.0.0/dist/tmplHtm.umd.js
+* UMD : https://cdn.jsdelivr.net/npm/tmpl-htm@1.0.1/dist/tmplHtm.umd.js
 
 
 #### With HTM
@@ -81,7 +81,7 @@ const element = tmplTag`<${Component} />`;
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "lithent",
+    "jsxImportSource": "tmpl-htm",
     //...
   }
 }
@@ -178,7 +178,7 @@ npm install -g pnpm
 ```bash
 git clone https://github.com/superlucky84/tmpl-htm.git
 
-cd lithent
+cd tmpl-htm
 
 pnpm install
 ```
