@@ -130,8 +130,8 @@ const Component = (props) => {
   `;
 });
 
-document.body.appendChild(tmplTag`<${Component}>`);
-appendAll(tmplTag`<${Component}>`, document.querySelectorAll('.target'));
+document.body.appendChild(tmplTag`<${Component} a=${7} />`);
+appendAll(tmplTag`<${Component} a=${7} />`, document.querySelectorAll('.target'));
 // append, appendAll, prepend, prependAll, replace, replaceAll, insertBefore, insertBeforeAll,
 ```
 
@@ -154,8 +154,8 @@ const Component = (props) => {
   `;
 });
 
-document.body.appendChild(tmplTag`<${Component}>`);
-appendAll(tmplTag`<${Component}>`, document.querySelectorAll('.target'));
+document.body.appendChild(tmplTag`<${Component} a=${7} />`);
+appendAll(tmplTag`<${Component} a=${7} />`, document.querySelectorAll('.target'));
 // append, appendAll, prepend, prependAll, replace, replaceAll, insertBefore, insertBeforeAll,
 </script>
 ```
