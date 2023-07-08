@@ -1,5 +1,5 @@
 import { h, Fragment } from '@/wDom';
-import htm from 'htm';
+import htm from 'htm/mini';
 export { ref } from '@/utils';
 export {
   append,
