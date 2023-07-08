@@ -1,7 +1,7 @@
 {
   "name": "tmpl-htm",
   "version": "1.0.1",
-  "description": "An extensible virtual DOM library for lightweight use in a variety of environments.",
+  "description": "Generate HTML elements using HTM ('Hyperscript Tagged Markup') or JSX.",
   "packageManager": "pnpm@7.6.0",
   "main": "./dist/tmplHtm.umd.js",
   "module": "./dist/tmplHtm.mjs",
