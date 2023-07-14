@@ -125,7 +125,7 @@ const Component = (props) => {
   return tmplTag`
     <${Fragment}>
       <li>count: ${props.count}</li>
-      <button onClick=${change}>increase</button>
+      <button>increase</button>
     <//>
   `;
 });
@@ -149,7 +149,7 @@ const Component = (props) => {
   return tmplTag`
     <${Fragment}>
       <li>count: ${props.count}</li>
-      <button onClick=${change}>increase</button>
+      <button>increase</button>
     <//>
   `;
 });
